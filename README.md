@@ -1,16 +1,60 @@
-# planner_app
+# Plann.er 🌏
 
-Planejador de Viagens
+Bem-vindo ao **Plann.er**, o seu planejador de viagens pessoal disponível para Web e Android (em breve para iOS)! 🎉
 
-## Getting Started
+![Logo](./assets/images/logo.png)
 
-This project is a starting point for a Flutter application.
+## Descrição
 
-A few resources to get you started if this is your first Flutter project:
+Plann.er é uma ferramenta inovadora que permite planejar todas as etapas da sua viagem em um só lugar. Convide amigos para visualizar a mesma viagem e colaborem juntos na criação de um roteiro perfeito. Organize suas atividades diárias e horários de maneira simples e eficiente.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Funcionalidades
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 🌐 **Disponível para Web e Android**: Planeje sua viagem em qualquer lugar, a qualquer momento.
+- 👥 **Convide Amigos**: Compartilhe seus planos de viagem e colabore com seus amigos.
+- 📆 **Abas de Atividades**: Adicione e organize atividades para cada dia da viagem.
+- 🕒 **Horários Personalizados**: Planeje o que fazer em cada horário do dia.
+
+## Instalação
+
+### Web
+1. Acesse [Plann.er Web](https://exemplo.com).
+2. Escolha local, data e convidados.
+3. Comece a planejar sua viagem!
+
+### Android
+1. Baixe o aplicativo na [Google Play Store](https://play.google.com/store/apps/details?id=com.plann.er).
+2. Instale o aplicativo.
+3. Escolha local, data e convidados.
+4. Comece a planejar sua viagem!
+
+### iOS (Em breve)
+- Aguarde o lançamento na App Store.
+
+## Uso
+
+### Planejamento de Viagem
+1. Crie uma nova viagem.
+2. Adicione destinos e datas.
+3. Convide amigos para visualizarem e colaborarem na viagem.
+4. Adicione atividades para cada dia e defina os horários.
+
+### Compartilhamento
+- Um e-mail é enviado ao convidar seus amigos dentro do aplicativo.
+
+## Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests e relatar problemas no nosso repositório.
+
+## Licença
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+## Contato
+
+- Email: support@plann.er
+- Website: [Plann.er](https://exemplo.com)
+
+---
+
+Comece a planejar a viagem dos seus sonhos com o **Plann.er** hoje mesmo! 🌟
