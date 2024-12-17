@@ -5,8 +5,8 @@ class AppTheme {
   static final secondaryButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.zinc800,
     foregroundColor: AppColors.textColor,
-    disabledBackgroundColor: AppColors.zinc800.withOpacity(0.8),
-    disabledForegroundColor: AppColors.textColor.withOpacity(0.8),
+    disabledBackgroundColor: AppColors.zinc800.withValues(alpha: 0.8),
+    disabledForegroundColor: AppColors.textColor.withValues(alpha: 0.8),
     minimumSize: const Size(0, 48),
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
     textStyle: const TextStyle(
@@ -22,8 +22,8 @@ class AppTheme {
   static final primaryButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.buttonColor,
     foregroundColor: AppColors.textButtonColor,
-    disabledBackgroundColor: AppColors.buttonColor.withOpacity(0.6),
-    disabledForegroundColor: AppColors.textButtonColor.withOpacity(0.6),
+    disabledBackgroundColor: AppColors.buttonColor.withValues(alpha: 0.6),
+    disabledForegroundColor: AppColors.textButtonColor.withValues(alpha: 0.6),
     minimumSize: const Size(0, 48),
     textStyle: const TextStyle(
       fontFamily: 'Inter',
@@ -57,7 +57,7 @@ class AppTheme {
     ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.buttonColor,
-      selectionColor: AppColors.buttonColor.withOpacity(0.15),
+      selectionColor: AppColors.buttonColor.withValues(alpha: 0.15),
     ),
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
