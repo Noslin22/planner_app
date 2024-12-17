@@ -23,6 +23,9 @@ jobs:
         with:
           channel: stable
   
+      - name: Version
+        run: flutter --version
+        
       - name: Install dependencies
         run: flutter pub get
 
