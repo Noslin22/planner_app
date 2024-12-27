@@ -22,7 +22,7 @@ class BluredBottomSheet extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 12, 10, 20),
         constraints: const BoxConstraints(maxWidth: 720),
-        color: AppColors.cardColor,
+        color: AppColors.zinc[900],
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

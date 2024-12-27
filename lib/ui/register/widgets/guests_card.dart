@@ -6,77 +6,96 @@ import 'package:planner_app/ui/register/widgets/guests_dialog.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/ui/show_off_screen.dart';
+import 'confirm_registration_dialog.dart';
 
 class GuestsCard extends StatelessWidget {
   const GuestsCard({
     super.key,
     required this.viewModel,
     required this.isPortrait,
+    required this.localizations,
   });
+
   final RegisterViewModel viewModel;
   final bool isPortrait;
+  final AppLocalization localizations;
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalization.of(context);
     if (viewModel.state == RegisterState.initial) {
       return Container();
     } else {
+      final Axis direction;
+      final CrossAxisAlignment alignment;
+      final Widget divider;
+
+      if (isPortrait) {
+        direction = Axis.horizontal;
+        alignment = CrossAxisAlignment.center;
+        divider = Container();
+      } else {
+        direction = Axis.vertical;
+        alignment = CrossAxisAlignment.stretch;
+        divider = Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Divider(
+            color: AppColors.zinc[800],
+          ),
+        );
+      }
       return Flex(
-        direction: isPortrait ? Axis.horizontal : Axis.vertical,
+        direction: direction,
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment:
-            isPortrait ? CrossAxisAlignment.center : CrossAxisAlignment.stretch,
+        crossAxisAlignment: alignment,
         children: [
-          !isPortrait
-              ? const Padding(
-                  padding: EdgeInsets.only(top: 12),
-                  child: Divider(
-                    color: AppColors.zinc800,
-                  ),
-                )
-              : Container(),
+          divider,
           ListenableBuilder(
-              listenable: viewModel,
-              builder: (context, _) {
-                final child = TextField(
-                  readOnly: true,
-                  controller: TextEditingController.fromValue(
-                    TextEditingValue(
-                      text: localizations.invitedGuests(
-                        viewModel.guests.length,
-                      ),
+            listenable: viewModel,
+            builder: (context, _) {
+              final child = TextField(
+                readOnly: true,
+                controller: TextEditingController.fromValue(
+                  TextEditingValue(
+                    text: localizations.invitedGuests(
+                      viewModel.guests.length,
                     ),
                   ),
-                  decoration: InputDecoration(
-                    hintText: localizations.guestsHint,
-                    icon: const Icon(Icons.person_add),
-                    iconColor: AppColors.secondaryColor,
-                  ),
-                  onTap: () {
-                    showOffScreen(
-                      dialog: GuestsDialog(
-                        viewModel: viewModel,
-                      ),
-                      isPortrait: isPortrait,
-                      context: context,
-                    );
-                  },
-                );
-                if (isPortrait) {
-                  return Expanded(
-                    child: child,
+                ),
+                decoration: InputDecoration(
+                  hintText: localizations.guestsHint,
+                  icon: const Icon(Icons.person_add),
+                  iconColor: AppColors.zinc,
+                ),
+                onTap: () {
+                  showOffScreen(
+                    dialog: GuestsDialog(
+                      viewModel: viewModel,
+                      localizations: localizations,
+                    ),
+                    isPortrait: isPortrait,
+                    context: context,
                   );
-                } else {
-                  return child;
-                }
-              }),
+                },
+              );
+
+              if (isPortrait) {
+                return Expanded(
+                  child: child,
+                );
+              } else {
+                return child;
+              }
+            },
+          ),
           const SizedBox(
             height: 12,
           ),
           ElevatedButton(
             style: AppTheme.primaryButtonStyle,
-            onPressed: viewModel.guests.isNotEmpty ? () {} : null,
+            onPressed: onPressed(
+              isPortrait: isPortrait,
+              context: context,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -84,12 +103,34 @@ class GuestsCard extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                const Icon(Icons.arrow_forward)
+                const Icon(
+                  Icons.arrow_forward,
+                )
               ],
             ),
           ),
         ],
       );
+    }
+  }
+
+  VoidCallback? onPressed({
+    required bool isPortrait,
+    required BuildContext context,
+  }) {
+    if (viewModel.guests.isNotEmpty) {
+      return () {
+        showOffScreen(
+          dialog: ConfirmRegistrationDialog(
+            viewModel: viewModel,
+            localizations: localizations,
+          ),
+          isPortrait: isPortrait,
+          context: context,
+        );
+      };
+    } else {
+      return null;
     }
   }
 }

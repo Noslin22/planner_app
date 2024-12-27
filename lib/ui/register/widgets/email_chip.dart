@@ -24,7 +24,7 @@ class EmailChip extends StatelessWidget {
       elevation: 1,
       side: BorderSide.none,
       deleteIcon: const Icon(Icons.close),
-      backgroundColor: AppColors.zinc800,
+      backgroundColor: AppColors.zinc[800],
     );
   }
 }

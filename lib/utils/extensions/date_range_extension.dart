@@ -34,6 +34,10 @@ extension DateRangeExtension on DateTimeRange {
     return "${start.day} ${localization.toPrep} ${end.day} ${localization.ofPrep} $month";
   }
 
+  DateTime dayByIndex(int index) {
+    return start.add(Duration(days: index));
+  }
+
   String shortFormat(AppLocalization localization) {
     final String month;
 

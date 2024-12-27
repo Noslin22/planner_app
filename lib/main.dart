@@ -9,13 +9,17 @@ import 'package:provider/provider.dart';
 import 'ui/core/theme/app_theme.dart';
 import 'ui/core/ui/custom_scroll_behavior.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
   Logger.root.level = Level.ALL;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
-    MultiProvider(
-      providers: providers,
-      child: const MainApp(),
-    ),
+    const MainApp(),
   );
 }
 
@@ -24,22 +28,25 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Plann.er',
-      theme: AppTheme.appTheme,
-      debugShowCheckedModeBanner: false,
-      locale: const Locale("en"),
-      supportedLocales: const [
-        Locale("pt"),
-        Locale("en"),
-      ],
-      localizationsDelegates: const [
-        ...GlobalMaterialLocalizations.delegates,
-        GlobalWidgetsLocalizations.delegate,
-        AppLocalizationDelegate(),
-      ],
-      scrollBehavior: CustomScrollBehavior(),
-      routerConfig: router(),
+    return MultiProvider(
+      providers: providers,
+      child: MaterialApp.router(
+        title: 'Plann.er',
+        theme: AppTheme.appTheme,
+        debugShowCheckedModeBanner: false,
+        locale: const Locale("pt"),
+        supportedLocales: const [
+          Locale("pt"),
+          Locale("en"),
+        ],
+        localizationsDelegates: const [
+          ...GlobalMaterialLocalizations.delegates,
+          GlobalWidgetsLocalizations.delegate,
+          AppLocalizationDelegate(),
+        ],
+        scrollBehavior: CustomScrollBehavior(),
+        routerConfig: router(),
+      ),
     );
   }
 }

@@ -9,7 +9,8 @@ class AppLocalization {
   final Locale locale;
 
   static AppLocalization of(BuildContext context) {
-    return Localizations.of<AppLocalization>(context, AppLocalization)!;
+    return Localizations.of<AppLocalization>(context, AppLocalization) ??
+        AppLocalization(const Locale('pt'));
   }
 
   static const _localizedValues = <String, Map<String, String>>{
@@ -74,6 +75,23 @@ class AppLocalization {
     }
     return "$guests ${_get("invitedGuests")}";
   }
+
+  String get confirmLabel => _get("confirmLabel");
+  String get forConfirmTrip => _get("forConfirmTrip");
+  String get inTheDatesOf => _get("inTheDatesOf");
+  String get fillYourData => _get("fillYourData");
+  String get yourName => _get("yourName");
+  String get yourEmail => _get("yourEmail");
+  String get confirmTripButton => _get("confirmTripButton");
+  String get monday => _get("monday");
+  String get tuesday => _get("tuesday");
+  String get wednesday => _get("wednesday");
+  String get thursday => _get("thursday");
+  String get friday => _get("friday");
+  String get saturday => _get("saturday");
+  String get sunday => _get("sunday");
+  String get activitiesLabel => _get("activitiesLabel");
+  String get newActivity => _get("newActivity");
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {

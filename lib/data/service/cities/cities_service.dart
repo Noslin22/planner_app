@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:planner_app/data/service/cities/model/city_model.dart';
+import 'package:result_dart/result_dart.dart';
 
-import '../../../utils/result.dart';
+import '../../../domain/models/city_model.dart';
 
 class CitiesService {
   final _log = Logger('CitiesService');
 
-  Future<Result<List<CityModel>>> getCities() async {
+  AsyncResult<List<CityModel>> getCities() async {
     try {
       final fileString =
           await rootBundle.loadString("assets/database/worldcities.csv");
@@ -32,16 +32,15 @@ class CitiesService {
           CityModel(
             name: name,
             countryId: countryId,
-            population: population,
           ),
         );
       }
 
       _log.finer('Got cities from database');
-      return Result.ok(result);
+      return Success(result);
     } on Exception catch (e) {
       _log.warning('Failed to get ciies', e);
-      return Result.error(e);
+      return Failure(e);
     }
   }
 }

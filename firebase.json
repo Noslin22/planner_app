@@ -1,0 +1,23 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "planner-journey",
+                    "appId": "1:567678381020:android:8a48fa6e08d375e60dfd19",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "planner-journey",
+                    "configurations": {
+                        "android": "1:567678381020:android:8a48fa6e08d375e60dfd19",
+                        "web": "1:567678381020:web:f9bbfe5bd06842bc0dfd19",
+                        "windows": "1:567678381020:web:c6837726b72e34330dfd19"
+                    }
+                }
+            }
+        }
+    }
+}

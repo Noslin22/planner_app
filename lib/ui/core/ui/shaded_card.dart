@@ -15,7 +15,7 @@ class ShadedCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: AppColors.cardColor,
+        color: AppColors.zinc[900],
         boxShadow: [
           BoxShadow(
             spreadRadius: 1,

@@ -3,21 +3,45 @@ import 'package:planner_app/ui/core/theme/app_colors.dart';
 
 class AppTheme {
   static final secondaryButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: AppColors.zinc800,
-    foregroundColor: AppColors.textColor,
-    disabledBackgroundColor: AppColors.zinc800.withValues(alpha: 0.8),
-    disabledForegroundColor: AppColors.textColor.withValues(alpha: 0.8),
+    backgroundColor: AppColors.zinc[800],
+    foregroundColor: AppColors.zinc[200],
+    disabledBackgroundColor: AppColors.zinc[800]!.withValues(alpha: 0.8),
+    disabledForegroundColor: AppColors.zinc[200]!.withValues(alpha: 0.8),
     minimumSize: const Size(0, 48),
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+    iconColor: AppColors.zinc[200],
+    disabledIconColor: AppColors.zinc[200]!.withValues(alpha: 0.8),
     textStyle: const TextStyle(
       fontFamily: 'Inter',
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8),
     ),
   );
+
+  static InputDecoration filledInputDecoration(IconData icon, String hint) {
+    return InputDecoration(
+      filled: true,
+      contentPadding: const EdgeInsets.symmetric(vertical: 20),
+      prefixIcon: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 8),
+        child: Icon(
+          icon,
+          color: AppColors.zinc,
+        ),
+      ),
+      hintText: hint,
+      fillColor: AppColors.zinc[950],
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(
+          color: AppColors.zinc[800]!,
+        ),
+      ),
+    );
+  }
 
   static final primaryButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.buttonColor,
@@ -30,6 +54,8 @@ class AppTheme {
       fontSize: 16,
       fontWeight: FontWeight.w600,
     ),
+    iconColor: AppColors.textButtonColor,
+    disabledIconColor: AppColors.textButtonColor.withValues(alpha: 0.6),
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8),
@@ -40,10 +66,10 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     colorSchemeSeed: AppColors.buttonColor,
-    scaffoldBackgroundColor: AppColors.zinc950,
-    cardTheme: const CardTheme(color: AppColors.cardColor),
+    scaffoldBackgroundColor: AppColors.zinc[950],
+    cardTheme: CardTheme(color: AppColors.zinc[900]),
     iconTheme: const IconThemeData(
-      color: AppColors.secondaryColor,
+      color: AppColors.zinc,
       size: 20,
     ),
     datePickerTheme: const DatePickerThemeData(
@@ -65,37 +91,37 @@ class AppTheme {
         fontFamily: 'Inter',
         fontSize: 18,
         fontWeight: FontWeight.w400,
-        color: AppColors.secondaryColor,
+        color: AppColors.zinc,
       ),
       labelStyle: TextStyle(
         fontFamily: 'Inter',
         fontSize: 18,
         fontWeight: FontWeight.w400,
-        color: AppColors.secondaryColor,
+        color: AppColors.zinc,
       ),
     ),
-    textTheme: const TextTheme(
-      bodySmall: TextStyle(
+    textTheme: TextTheme(
+      bodySmall: const TextStyle(
         fontFamily: 'Inter',
         fontSize: 14,
-        color: AppColors.secondaryColor,
+        color: AppColors.zinc,
       ),
       bodyMedium: TextStyle(
         fontFamily: 'Inter',
         fontSize: 16,
-        color: AppColors.textSecondColor,
+        color: AppColors.zinc[300],
       ),
       bodyLarge: TextStyle(
         fontFamily: 'Inter',
         fontSize: 18,
-        color: AppColors.textColor,
+        color: AppColors.zinc[200],
       ),
-      displayLarge: TextStyle(
+      displayLarge: const TextStyle(
         fontFamily: 'Inter',
         fontSize: 18,
-        color: AppColors.secondaryColor,
+        color: AppColors.zinc,
       ),
-      titleSmall: TextStyle(
+      titleSmall: const TextStyle(
         fontFamily: 'Inter',
         fontSize: 18,
         fontWeight: FontWeight.w600,
@@ -103,26 +129,25 @@ class AppTheme {
       ),
       titleMedium: TextStyle(
         fontFamily: 'Inter',
-        fontSize: 18,
-        fontWeight: FontWeight.w400,
-        color: AppColors.secondaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: AppColors.zinc[50],
       ),
-      titleLarge: TextStyle(
+      titleLarge: const TextStyle(
         fontFamily: 'Inter',
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),
-      labelSmall: TextStyle(
+      labelSmall: const TextStyle(
         fontFamily: 'Inter',
         fontSize: 12,
-        color: AppColors.secondaryColor,
+        color: AppColors.zinc,
       ),
       labelMedium: TextStyle(
         fontFamily: 'Inter',
         fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
+        color: AppColors.zinc[100],
       ),
     ),
   )..colorScheme.copyWith(onError: AppColors.onError);

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:planner_app/data/repository/cities/cities_repository.dart';
-import 'package:planner_app/data/service/cities/model/city_model.dart';
+import 'package:planner_app/data/repository/trip/trip_repository.dart';
+import 'package:planner_app/domain/models/guest_model.dart';
+import 'package:planner_app/domain/models/trip_model.dart';
+import 'package:result_dart/result_dart.dart';
 
+import '../../../domain/models/city_model.dart';
 import '../../../utils/command.dart';
-import '../../../utils/result.dart';
 
 enum RegisterState {
   initial,
@@ -15,11 +18,15 @@ enum RegisterState {
 class RegisterViewModel extends ChangeNotifier {
   RegisterViewModel({
     required CitiesRepository citiesRepository,
-  }) : _citiesRepository = citiesRepository {
-    load = Command0<void>(_load)..execute();
+    required TripRepository tripRepository,
+  })  : _citiesRepository = citiesRepository,
+        _tripRepository = tripRepository {
+    load = Command0<List<CityModel>>(_load)..execute();
+    createTrip = Command2<String, String, String>(_createTrip);
   }
 
   final CitiesRepository _citiesRepository;
+  final TripRepository _tripRepository;
 
   final _log = Logger('RegisterViewModel');
 
@@ -68,26 +75,38 @@ class RegisterViewModel extends ChangeNotifier {
   List<CityModel> get cities => _cities;
 
   late final Command0 load;
+  AsyncResult<List<CityModel>> _load() async {
+    final result = await _citiesRepository.getCities();
 
-  Future<Result<void>> _load() async {
-    final result = await _loadCities();
+    result.fold(_loadCities, _reportFailure);
+    notifyListeners();
+
     return result;
   }
 
-  Future<Result<void>> _loadCities() async {
-    final result = await _citiesRepository.getCities();
-    switch (result) {
-      case Ok():
-        {
-          _cities = result.value;
-          _log.fine('Cities (${_cities.length}) loaded');
-        }
-      case Error():
-        {
-          _log.warning('Failed to load cities', result.asError.error);
-        }
-    }
-    notifyListeners();
+  void _loadCities(List<CityModel> cities) {
+    _cities = cities;
+    _log.fine('Cities (${_cities.length}) loaded');
+  }
+
+  void _reportFailure(Exception e) {
+    _log.warning('Failed to load cities', e);
+  }
+
+  late final Command2<String, String, String> createTrip;
+
+  AsyncResult<String> _createTrip(String name, String email) async {
+    final result = await _tripRepository.createTrip(
+      TripModel(
+        city: destination!,
+        dateRange: dateRange!,
+        name: name,
+        email: email,
+        guests: guests.map((e) => GuestModel(email: e)).toList(),
+        activities: [],
+        links: [],
+      ),
+    );
     return result;
   }
 }

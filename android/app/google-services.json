@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567678381020",
+    "project_id": "planner-journey",
+    "storage_bucket": "planner-journey.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567678381020:android:8a48fa6e08d375e60dfd19",
+        "android_client_info": {
+          "package_name": "com.jnproductions.br.planner_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgvuN96CAz_hIaj-v7hNpBPu6LnayovBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

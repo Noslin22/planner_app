@@ -13,9 +13,12 @@ class InformationCard extends StatelessWidget {
   InformationCard({
     super.key,
     required this.viewModel,
+    required this.localizations,
   });
 
   final RegisterViewModel viewModel;
+  final AppLocalization localizations;
+
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController dateRangeController = TextEditingController();
   final FocusNode focusDestination = FocusNode();
@@ -30,8 +33,6 @@ class InformationCard extends StatelessWidget {
         return ListenableBuilder(
           listenable: viewModel,
           builder: (context, _) {
-            final localizations = AppLocalization.of(context);
-
             final ButtonStyle buttonStyle;
             final VoidCallback action;
             final String label;
@@ -41,7 +42,9 @@ class InformationCard extends StatelessWidget {
               case RegisterState.initial:
                 buttonStyle = AppTheme.primaryButtonStyle;
                 label = localizations.continueT;
-                icon = const Icon(Icons.arrow_forward);
+                icon = const Icon(
+                  Icons.arrow_forward,
+                );
                 action = () {
                   if (viewModel.destination != null &&
                       viewModel.dateRange != null) {
@@ -51,7 +54,9 @@ class InformationCard extends StatelessWidget {
               case RegisterState.half || RegisterState.complete:
                 buttonStyle = AppTheme.secondaryButtonStyle;
                 label = localizations.changePlaceDate;
-                icon = const Icon(Icons.tune);
+                icon = const Icon(
+                  Icons.tune,
+                );
                 action = () {
                   viewModel.state = RegisterState.initial;
                 };
@@ -71,7 +76,10 @@ class InformationCard extends StatelessWidget {
                             final child = IgnorePointer(
                               ignoring:
                                   viewModel.state != RegisterState.initial,
-                              child: SearchCitiesField(viewModel: viewModel),
+                              child: SearchCitiesField(
+                                viewModel: viewModel,
+                                localizations: localizations,
+                              ),
                             );
                             if (isPortrait) {
                               return Expanded(child: child);
@@ -100,51 +108,17 @@ class InformationCard extends StatelessWidget {
                                 child: TextField(
                                   readOnly: true,
                                   controller: dateRangeController,
-                                  onTap: () {
-                                    showDateRangePicker(
-                                      context: context,
-                                      locale:
-                                          AppLocalization.of(context).locale,
-                                      initialDateRange: viewModel.dateRange,
-                                      firstDate: DateTime(DateTime.now().year),
-                                      lastDate:
-                                          DateTime(DateTime.now().year, 12, 31),
-                                    ).then(
-                                      (dateRange) {
-                                        if (dateRange == null) {
-                                          return viewModel.dateRange;
-                                        }
-                                        viewModel.dateRange = dateRange;
-
-                                        dateRangeController.text = viewModel
-                                                .dateRange
-                                                ?.longFormat(localizations) ??
-                                            "";
-
-                                        return viewModel.dateRange;
-                                      },
-                                    );
-                                  },
+                                  onTap: () => showDateDialog(context),
                                   style: const TextStyle(fontSize: 16),
                                   decoration: InputDecoration(
                                     hintText: localizations.when,
                                     icon: const Icon(Icons.calendar_today),
-                                    iconColor: AppColors.secondaryColor,
+                                    iconColor: AppColors.zinc,
                                   ),
                                 ),
                               ),
                             ),
-                            isPortrait
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Container(
-                                      width: 2,
-                                      height: 36,
-                                      color: AppColors.zinc800,
-                                    ),
-                                  )
-                                : Container(),
+                            divider(isPortrait),
                             const SizedBox(
                               height: 12,
                             ),
@@ -164,14 +138,13 @@ class InformationCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        ...isPortrait
-                            ? [Container()]
-                            : [
-                                GuestsCard(
-                                  viewModel: viewModel,
-                                  isPortrait: isPortrait,
-                                )
-                              ],
+                        isPortrait
+                            ? Container()
+                            : GuestsCard(
+                                viewModel: viewModel,
+                                isPortrait: isPortrait,
+                                localizations: localizations,
+                              ),
                       ],
                     ),
                   ),
@@ -187,6 +160,7 @@ class InformationCard extends StatelessWidget {
                             child: GuestsCard(
                               viewModel: viewModel,
                               isPortrait: isPortrait,
+                              localizations: localizations,
                             ),
                           ),
                         ),
@@ -196,6 +170,45 @@ class InformationCard extends StatelessWidget {
             );
           },
         );
+      },
+    );
+  }
+
+  Widget divider(bool isPortrait) {
+    if (isPortrait) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Container(
+          width: 2,
+          height: 36,
+          color: AppColors.zinc[800],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  void showDateDialog(BuildContext context) {
+    showDateRangePicker(
+      context: context,
+      locale: AppLocalization.of(context).locale,
+      initialDateRange: viewModel.dateRange,
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year, 12, 31),
+    ).then(
+      (dateRange) {
+        if (dateRange == null) {
+          return viewModel.dateRange;
+        }
+        viewModel.dateRange = dateRange;
+
+        dateRangeController.text =
+            viewModel.dateRange?.longFormat(localizations) ?? "";
+
+        return viewModel.dateRange;
       },
     );
   }

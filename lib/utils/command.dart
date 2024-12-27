@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:result_dart/result_dart.dart';
 
-import 'result.dart';
-
-typedef CommandAction0<T> = Future<Result<T>> Function();
-typedef CommandAction1<T, A> = Future<Result<T>> Function(A);
+typedef CommandAction0<T extends Object> = AsyncResult<T> Function();
+typedef CommandAction1<T extends Object, A> = AsyncResult<T> Function(A);
+typedef CommandAction2<T extends Object, A1, A2> = AsyncResult<T> Function(
+    A1, A2);
 
 /// Facilitates interaction with a ViewModel.
 ///
@@ -20,7 +21,7 @@ typedef CommandAction1<T, A> = Future<Result<T>> Function(A);
 ///
 /// Consume the action result by listening to changes,
 /// then call to [clearResult] when the state is consumed.
-abstract class Command<T> extends ChangeNotifier {
+abstract class Command<T extends Object> extends ChangeNotifier {
   Command();
 
   bool _running = false;
@@ -31,13 +32,13 @@ abstract class Command<T> extends ChangeNotifier {
   Result<T>? _result;
 
   /// true if action completed with error
-  bool get error => _result is Error;
+  bool get error => _result is Failure;
 
   /// true if action completed successfully
-  bool get completed => _result is Ok;
+  bool get completed => _result is Success;
 
   /// Get last action result
-  Result? get result => _result;
+  Result<T>? get result => _result;
 
   /// Clear last action result
   void clearResult() {
@@ -68,7 +69,7 @@ abstract class Command<T> extends ChangeNotifier {
 
 /// [Command] without arguments.
 /// Takes a [CommandAction0] as action.
-class Command0<T> extends Command<T> {
+class Command0<T extends Object> extends Command<T> {
   Command0(this._action);
 
   final CommandAction0<T> _action;
@@ -81,7 +82,7 @@ class Command0<T> extends Command<T> {
 
 /// [Command] with one argument.
 /// Takes a [CommandAction1] as action.
-class Command1<T, A> extends Command<T> {
+class Command1<T extends Object, A> extends Command<T> {
   Command1(this._action);
 
   final CommandAction1<T, A> _action;
@@ -89,5 +90,18 @@ class Command1<T, A> extends Command<T> {
   /// Executes the action with the argument.
   Future<void> execute(A argument) async {
     await _execute(() => _action(argument));
+  }
+}
+
+/// [Command] with one argument.
+/// Takes a [CommandAction1] as action.
+class Command2<T extends Object, A1, A2> extends Command<T> {
+  Command2(this._action);
+
+  final CommandAction2<T, A1, A2> _action;
+
+  /// Executes the action with the argument.
+  Future<void> execute(A1 a1, A2 a2) async {
+    await _execute(() => _action(a1, a2));
   }
 }

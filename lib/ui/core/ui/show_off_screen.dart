@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-showOffScreen({
+void showOffScreen({
   required Widget dialog,
   required bool isPortrait,
   required BuildContext context,
@@ -8,9 +8,7 @@ showOffScreen({
   if (isPortrait) {
     showDialog(
       context: context,
-      // backgroundColor: Colors.transparent,
-      // scrollControlDisabledMaxHeightRatio: 11 / 16,
-      // elevation: 0,
+      barrierDismissible: false,
       builder: (context) {
         return Center(
           child: Material(
@@ -26,6 +24,7 @@ showOffScreen({
       backgroundColor: Colors.transparent,
       scrollControlDisabledMaxHeightRatio: 11 / 16,
       elevation: 0,
+      isDismissible: false,
       builder: (context) {
         return Material(
           color: Colors.transparent,

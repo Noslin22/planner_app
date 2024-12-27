@@ -13,9 +13,11 @@ class RegisterPage extends StatelessWidget {
   const RegisterPage({
     super.key,
     required this.viewModel,
+    required this.localizations,
   });
 
   final RegisterViewModel viewModel;
+  final AppLocalization localizations;
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +60,18 @@ class RegisterPage extends StatelessWidget {
                   if (viewModel.load.error) {
                     return Center(
                       child: ErrorIndicator(
-                        title:
-                            AppLocalization.of(context).errorWhileLoadingCities,
-                        label: AppLocalization.of(context).tryAgain,
+                        title: localizations.errorWhileLoadingCities,
+                        label: localizations.tryAgain,
                         onPressed: viewModel.load.execute,
                       ),
                     );
                   }
                   return child!;
                 },
-                child: InformationCard(viewModel: viewModel),
+                child: InformationCard(
+                  viewModel: viewModel,
+                  localizations: localizations,
+                ),
               ),
             ),
             ConstrainedBox(
@@ -83,11 +87,20 @@ class RegisterPage extends StatelessWidget {
                     TextSpan(
                       text: AppLocalization.of(context).useTerms,
                       style: context.theme.textTheme.bodySmall!.copyWith(
-                        color: AppColors.textColor,
+                        color: AppColors.zinc[200],
                         decoration: TextDecoration.underline,
-                        decorationColor: AppColors.textColor,
+                        decorationColor: AppColors.zinc[200],
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // showOffScreen(
+                          //   dialog: ConfirmRegistrationDialog(
+                          //     viewModel: viewModel,
+                          //   ),
+                          //   isPortrait: false,
+                          //   context: context,
+                          // );
+                        },
                     ),
                     TextSpan(
                       text: AppLocalization.of(context).and,
@@ -96,9 +109,9 @@ class RegisterPage extends StatelessWidget {
                     TextSpan(
                       text: AppLocalization.of(context).privacyPolicies,
                       style: context.theme.textTheme.bodySmall!.copyWith(
-                        color: AppColors.textColor,
+                        color: AppColors.zinc[200],
                         decoration: TextDecoration.underline,
-                        decorationColor: AppColors.textColor,
+                        decorationColor: AppColors.zinc[200],
                       ),
                     ),
                     TextSpan(

@@ -4,19 +4,20 @@ import 'package:planner_app/ui/register/viewmodel/register_viewmodel.dart';
 import 'package:planner_app/utils/extensions/accents_extension.dart';
 import 'package:searchfield/searchfield.dart';
 
-import '../../../data/service/cities/model/city_model.dart';
+import '../../../domain/models/city_model.dart';
 import '../../core/theme/app_colors.dart';
 
 class SearchCitiesField extends StatelessWidget {
   const SearchCitiesField({
     super.key,
     required this.viewModel,
+    required this.localizations,
   });
   final RegisterViewModel viewModel;
+  final AppLocalization localizations;
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalization.of(context);
     return SearchField<CityModel>(
       suggestions: viewModel.cities.map((city) => city.toListItem).toList(),
       selectedValue: viewModel.destination?.toListItem,
@@ -52,20 +53,19 @@ class SearchCitiesField extends StatelessWidget {
       suggestionsDecoration: SuggestionDecoration(
         borderRadius: BorderRadius.circular(10),
         elevation: 10,
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: AppColors.zinc800,
+            color: AppColors.zinc[800]!,
             blurRadius: 5,
             spreadRadius: 5,
           ),
         ],
       ),
-      suggestionState: Suggestion.hidden,
       searchInputDecoration: SearchInputDecoration(
         hintText: localizations.where,
         icon: const Icon(
           Icons.place,
-          color: AppColors.secondaryColor,
+          color: AppColors.zinc,
         ),
       ),
     );
