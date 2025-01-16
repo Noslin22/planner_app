@@ -33,7 +33,7 @@ class HomeViewModel extends ChangeNotifier {
 
   void _loadSuccess(TripModel trip) {
     _trip = trip;
-    _log.fine('Trip to ${trip.city.name} loaded');
+    _log.fine('Trip to ${trip.destination.name} loaded');
   }
 
   void _loadFailure(Exception e) {

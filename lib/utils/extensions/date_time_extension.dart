@@ -3,8 +3,40 @@ import 'package:planner_app/domain/models/activitiy_model.dart';
 import '../../ui/core/localization/app_localization.dart';
 
 extension DateTimeExtension on DateTime {
-  String timeFormat() {
+  String toFormattedTime() {
     return "${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}h";
+  }
+
+  String toFormattedDate(AppLocalization localization) {
+    final String monthName;
+
+    switch (month) {
+      case 1:
+        monthName = localization.january;
+      case 2:
+        monthName = localization.february;
+      case 3:
+        monthName = localization.march;
+      case 4:
+        monthName = localization.april;
+      case 5:
+        monthName = localization.mayLong;
+      case 6:
+        monthName = localization.june;
+      case 7:
+        monthName = localization.july;
+      case 8:
+        monthName = localization.august;
+      case 9:
+        monthName = localization.september;
+      case 10:
+        monthName = localization.octuber;
+      case 11:
+        monthName = localization.november;
+      default:
+        monthName = localization.december;
+    }
+    return "$day ${localization.ofPrep} $monthName";
   }
 
   /// Returns true if the date is the same as the other date

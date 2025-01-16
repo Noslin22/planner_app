@@ -8,7 +8,7 @@ import 'city_model.dart';
 import 'link_model.dart';
 
 class TripModel {
-  final CityModel city;
+  final CityModel destination;
   final DateTimeRange dateRange;
   final String name;
   final String email;
@@ -18,7 +18,7 @@ class TripModel {
   final String id;
 
   TripModel({
-    required this.city,
+    required this.destination,
     required this.dateRange,
     required this.name,
     required this.email,
@@ -29,7 +29,7 @@ class TripModel {
   });
 
   TripModel copyWith({
-    CityModel? city,
+    CityModel? destination,
     DateTimeRange? dateRange,
     String? name,
     String? email,
@@ -39,7 +39,7 @@ class TripModel {
     String? id,
   }) {
     return TripModel(
-      city: city ?? this.city,
+      destination: destination ?? this.destination,
       dateRange: dateRange ?? this.dateRange,
       name: name ?? this.name,
       email: email ?? this.email,

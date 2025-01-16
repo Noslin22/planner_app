@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 import 'package:planner_app/ui/home/viewmodel/activities_viewmodel.dart';
+import 'package:planner_app/ui/home/viewmodel/details_viewmodel.dart';
 import 'package:planner_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:planner_app/ui/home/widgets/activities/activities_screen.dart';
 import 'package:planner_app/ui/home/widgets/bottom_bar.dart';
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
       builder: (context, _) {
         return LayoutBuilder(
           builder: (context, constraints) {
-            final isPortrait = constraints.maxWidth >= 720;
+            final isPortrait = constraints.maxWidth >= 780;
 
             if (viewModel.load.running) {
               return const Scaffold(
@@ -63,43 +64,45 @@ class HomePage extends StatelessWidget {
 
             return Scaffold(
               body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: 800,
-                    ),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TopBar(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 1100,
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: TopBar(
                               viewModel: viewModel,
                               isPortrait: isPortrait,
                             ),
-                            const SizedBox(
-                              height: 20,
+                          ),
+                          Expanded(
+                            child: bodyWidget(
+                              isPortrait,
+                              context,
                             ),
-                            Expanded(
-                              child: bodyWidget(
-                                isPortrait,
-                                context,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 78,
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
+                          ),
+                          isPortrait
+                              ? Container()
+                              : const SizedBox(
+                                  height: 80,
+                                ),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
                           child: bottomBar(isPortrait),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -120,33 +123,41 @@ class HomePage extends StatelessWidget {
   }
 
   Widget bodyWidget(bool isPortrait, BuildContext context) {
-    final ActivitiesViewModel activitiesViewModel = ActivitiesViewModel(
-      activitiesRepository: context.read(),
-      trip: viewModel.trip!,
+    final activities = ActivitiesScreen(
+      viewModel: ActivitiesViewModel(
+        activitiesRepository: context.read(),
+        trip: viewModel.trip!,
+      ),
+      localizations: localizations,
+      isPortrait: isPortrait,
+    );
+
+    final details = DetailsScreen(
+      viewModel: DetailsViewModel(
+        guestsRepository: context.read(),
+        linksRepository: context.read(),
+        trip: viewModel.trip!,
+      ),
+      localizations: localizations,
+      isPortrait: isPortrait,
     );
 
     if (isPortrait) {
       return Row(
         children: [
           Expanded(
-            child: ActivitiesScreen(
-              viewModel: activitiesViewModel,
-              localizations: localizations,
-            ),
+            child: activities,
           ),
           const SizedBox(
-            width: 20,
+            width: 64,
           ),
-          const DetailsScreen(),
+          details,
         ],
       );
     }
     if (viewModel.isActivities) {
-      return ActivitiesScreen(
-        viewModel: activitiesViewModel,
-        localizations: localizations,
-      );
+      return activities;
     }
-    return const DetailsScreen();
+    return details;
   }
 }

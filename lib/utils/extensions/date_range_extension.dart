@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 
+enum DateRangeFormat { short, long }
+
 extension DateRangeExtension on DateTimeRange {
-  String longFormat(AppLocalization localization) {
+  String formatBySize({
+    required AppLocalization localization,
+    DateRangeFormat format = DateRangeFormat.long,
+  }) {
+    if (format == DateRangeFormat.short) {
+      return _shortFormat(localization);
+    }
+    return _longFormat(localization);
+  }
+
+  String _longFormat(AppLocalization localization) {
     final String month;
 
     switch (end.month) {
@@ -38,7 +50,7 @@ extension DateRangeExtension on DateTimeRange {
     return start.add(Duration(days: index));
   }
 
-  String shortFormat(AppLocalization localization) {
+  String _shortFormat(AppLocalization localization) {
     final String month;
 
     switch (end.month) {

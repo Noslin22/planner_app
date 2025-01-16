@@ -5,10 +5,10 @@ import 'package:planner_app/ui/register/viewmodel/register_viewmodel.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/ui/blured_bottom_sheet.dart';
-import 'email_chip.dart';
+import '../../core/ui/email_chip.dart';
 
-class GuestsDialog extends StatelessWidget {
-  GuestsDialog({
+class RegisterGuestsDialog extends StatelessWidget {
+  RegisterGuestsDialog({
     super.key,
     required this.viewModel,
     required this.localizations,
@@ -39,10 +39,10 @@ class GuestsDialog extends StatelessWidget {
                   children: List.generate(
                     viewModel.guests.length,
                     (index) {
-                      final String email = viewModel.guests[index];
+                      final String email = viewModel.guests[index].email;
                       return EmailChip(
                         email: email,
-                        viewModel: viewModel,
+                        onDeleted: () => viewModel.removeGuest(email),
                       );
                     },
                   ),

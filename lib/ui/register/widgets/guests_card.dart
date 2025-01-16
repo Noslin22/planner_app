@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 import 'package:planner_app/ui/register/viewmodel/register_viewmodel.dart';
-import 'package:planner_app/ui/register/widgets/guests_dialog.dart';
+import 'package:planner_app/ui/register/widgets/register_guests_dialog.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
@@ -68,7 +68,7 @@ class GuestsCard extends StatelessWidget {
                 ),
                 onTap: () {
                   showOffScreen(
-                    dialog: GuestsDialog(
+                    dialog: RegisterGuestsDialog(
                       viewModel: viewModel,
                       localizations: localizations,
                     ),

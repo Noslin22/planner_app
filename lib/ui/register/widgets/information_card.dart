@@ -14,12 +14,14 @@ class InformationCard extends StatelessWidget {
     super.key,
     required this.viewModel,
     required this.localizations,
-  });
+  }) {
+    final date = viewModel.dateRange?.formatBySize(localization: localizations);
+    dateRangeController.text = date ?? "";
+  }
 
   final RegisterViewModel viewModel;
   final AppLocalization localizations;
 
-  final TextEditingController destinationController = TextEditingController();
   final TextEditingController dateRangeController = TextEditingController();
   final FocusNode focusDestination = FocusNode();
 
@@ -206,7 +208,8 @@ class InformationCard extends StatelessWidget {
         viewModel.dateRange = dateRange;
 
         dateRangeController.text =
-            viewModel.dateRange?.longFormat(localizations) ?? "";
+            viewModel.dateRange?.formatBySize(localization: localizations) ??
+                "";
 
         return viewModel.dateRange;
       },
