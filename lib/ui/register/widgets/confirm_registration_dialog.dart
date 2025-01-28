@@ -12,13 +12,7 @@ class ConfirmRegistrationDialog extends StatelessWidget {
     super.key,
     required this.viewModel,
     required this.localizations,
-  }) {
-    if (viewModel.trip != null) {
-      nameController.text = viewModel.trip!.name;
-      emailController.text = viewModel.trip!.email;
-    }
-  }
-
+  });
   final RegisterViewModel viewModel;
   final AppLocalization localizations;
 
@@ -95,8 +89,13 @@ class ConfirmRegistrationDialog extends StatelessWidget {
             final Widget buttonChild;
 
             if (viewModel.createTrip.running) {
-              buttonChild = const CircularProgressIndicator(
-                color: AppColors.textButtonColor,
+              buttonChild = const Center(
+                child: SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(
+                    color: AppColors.textButtonColor,
+                  ),
+                ),
               );
             } else {
               buttonChild = Text(localizations.confirmTripButton);

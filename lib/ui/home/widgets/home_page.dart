@@ -144,6 +144,7 @@ class HomePage extends StatelessWidget {
 
     if (isPortrait) {
       return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: activities,

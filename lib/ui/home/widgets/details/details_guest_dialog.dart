@@ -22,6 +22,40 @@ class DetailsGuestsDialog extends StatelessWidget {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, _) {
+        final Widget child;
+        final VoidCallback? onPressed;
+
+        if (viewModel.newGuest?.isNotEmpty ?? false) {
+          onPressed = () async {
+            await viewModel.addGuest.execute();
+            viewModel.newGuest = null;
+          };
+        } else {
+          onPressed = null;
+        }
+
+        if (viewModel.addGuest.running) {
+          child = const Center(
+            child: SizedBox.square(
+              dimension: 24,
+              child: CircularProgressIndicator(
+                color: AppColors.textButtonColor,
+              ),
+            ),
+          );
+        } else {
+          child = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(localizations.inviteLabel),
+              const SizedBox(
+                width: 8,
+              ),
+              const Icon(Icons.add)
+            ],
+          );
+        }
+
         return BluredBottomSheet(
           label: localizations.selectedGuests,
           contents: [
@@ -67,17 +101,8 @@ class DetailsGuestsDialog extends StatelessWidget {
             ),
             ElevatedButton(
               style: AppTheme.primaryButtonStyle,
-              onPressed: onPressed(),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(localizations.inviteLabel),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  const Icon(Icons.add)
-                ],
-              ),
+              onPressed: onPressed,
+              child: child,
             ),
           ],
         );
@@ -92,17 +117,6 @@ class DetailsGuestsDialog extends StatelessWidget {
       );
     } else {
       return Container();
-    }
-  }
-
-  VoidCallback? onPressed() {
-    if (viewModel.newGuest?.isEmpty ?? true) {
-      return null;
-    } else {
-      return () async {
-        await viewModel.addGuest.execute();
-        viewModel.newGuest = null;
-      };
     }
   }
 }

@@ -19,6 +19,12 @@ class TripRepository {
     return _apiService.createTrip(tripApi)..onSuccess(_saveTripId);
   }
 
+  AsyncResult<TripModel> updateTrip(TripModel trip) async {
+    final TripApiModel tripApi = TripApiModel.fromTrip(trip);
+    final result = await _apiService.updateTrip(tripApi);
+    return result.map(mapTrip);
+  }
+
   void _saveTripId(String tripId) {
     _localService.saveTripId(tripId);
   }

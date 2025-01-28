@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 import 'package:planner_app/ui/register/viewmodel/register_viewmodel.dart';
 import 'package:planner_app/ui/register/widgets/register_guests_dialog.dart';
@@ -90,31 +91,66 @@ class GuestsCard extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          ElevatedButton(
-            style: AppTheme.primaryButtonStyle,
-            onPressed: onPressed(
-              isPortrait: isPortrait,
-              context: context,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(localizations.confirmTrip),
-                const SizedBox(
-                  width: 8,
-                ),
-                const Icon(
-                  Icons.arrow_forward,
-                )
-              ],
-            ),
+          ListenableBuilder(
+            listenable: viewModel.updateTrip,
+            builder: (context, _) {
+              final String label;
+              final VoidCallback? onPressed;
+              final Widget child;
+
+              if (viewModel.trip != null) {
+                label = "Editar Viagem";
+                onPressed = () async {
+                  await viewModel.updateTrip.execute();
+                  if (context.mounted) {
+                    context.pop();
+                  }
+                };
+              } else {
+                label = localizations.confirmTrip;
+                onPressed = createTrip(
+                  isPortrait: isPortrait,
+                  context: context,
+                );
+              }
+
+              if (viewModel.updateTrip.running) {
+                child = const Center(
+                  child: SizedBox.square(
+                    dimension: 24,
+                    child: CircularProgressIndicator(
+                      color: AppColors.textButtonColor,
+                    ),
+                  ),
+                );
+              } else {
+                child = Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(label),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Icon(
+                      Icons.arrow_forward,
+                    )
+                  ],
+                );
+              }
+
+              return ElevatedButton(
+                style: AppTheme.primaryButtonStyle,
+                onPressed: onPressed,
+                child: child,
+              );
+            },
           ),
         ],
       );
     }
   }
 
-  VoidCallback? onPressed({
+  VoidCallback? createTrip({
     required bool isPortrait,
     required BuildContext context,
   }) {

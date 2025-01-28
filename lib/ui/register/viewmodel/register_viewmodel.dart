@@ -31,6 +31,7 @@ class RegisterViewModel extends ChangeNotifier {
 
     load = Command0<List<CityModel>>(_load)..execute();
     createTrip = Command2<String, String, String>(_createTrip);
+    updateTrip = Command0<TripModel>(_updateTrip);
   }
 
   final CitiesRepository _citiesRepository;
@@ -119,20 +120,24 @@ class RegisterViewModel extends ChangeNotifier {
   }
 
   late final Command2<String, String, String> createTrip;
+  late final Command0<TripModel> updateTrip;
 
   AsyncResult<String> _createTrip(String name, String email) async {
     final result = await _tripRepository.createTrip(
-      trip ??
-          TripModel(
-            destination: destination!,
-            dateRange: dateRange!,
-            name: name,
-            email: email,
-            guests: guests,
-            activities: [],
-            links: [],
-          ),
+      TripModel(
+        destination: destination!,
+        dateRange: dateRange!,
+        name: name,
+        email: email,
+        guests: guests,
+        activities: [],
+        links: [],
+      ),
     );
     return result;
+  }
+
+  AsyncResult<TripModel> _updateTrip() async {
+    return await _tripRepository.updateTrip(trip!);
   }
 }

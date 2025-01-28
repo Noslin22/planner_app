@@ -21,6 +21,38 @@ class LinkDialog extends StatelessWidget {
         viewModel.addLink,
       ]),
       builder: (context, _) {
+        final VoidCallback? onPressed;
+        final Widget child;
+
+        if (viewModel.canAddLink) {
+          onPressed = () {
+            viewModel.addLink
+                .execute(viewModel.linkName!, viewModel.linkUrl!)
+                .then(
+              (_) {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
+              },
+            );
+          };
+        } else {
+          onPressed = null;
+        }
+
+        if (viewModel.addLink.running) {
+          child = const Center(
+            child: SizedBox.square(
+              dimension: 24,
+              child: CircularProgressIndicator(
+                color: AppColors.textButtonColor,
+              ),
+            ),
+          );
+        } else {
+          child = const Text('Salvar Link');
+        }
+
         return BluredBottomSheet(
           label: 'Cadastrar Link',
           contents: [
@@ -44,24 +76,8 @@ class LinkDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: viewModel.canAddLink
-                  ? () {
-                      viewModel.addLink
-                          .execute(viewModel.linkName!, viewModel.linkUrl!)
-                          .then(
-                        (_) {
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                          }
-                        },
-                      );
-                    }
-                  : null,
-              child: viewModel.addLink.running
-                  ? const CircularProgressIndicator(
-                      color: AppColors.textButtonColor,
-                    )
-                  : const Text('Salvar Link'),
+              onPressed: onPressed,
+              child: child,
             ),
           ],
         );

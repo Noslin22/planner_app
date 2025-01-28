@@ -36,7 +36,7 @@ class DayTile extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Dia ${index + 1}',
+                'Dia ${date.day.toString().padLeft(2, '0')}',
                 style: TextTheme.of(context).titleMedium,
               ),
               const SizedBox(width: 8),
