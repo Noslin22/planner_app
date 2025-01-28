@@ -33,7 +33,7 @@ class TripApiModel {
 
   factory TripApiModel.fromTrip(TripModel trip) {
     return TripApiModel(
-      destination: trip.city.destinationFormat,
+      destination: trip.destination.destinationFormat,
       startDate: Timestamp.fromDate(trip.dateRange.start),
       endDate: Timestamp.fromDate(trip.dateRange.end),
       name: trip.name,
@@ -49,7 +49,7 @@ class TripApiModel {
     final destinationList = destination.split(', ');
 
     return TripModel(
-      city: CityModel(
+      destination: CityModel(
         name: destinationList[0],
         countryId: destinationList[1],
       ),

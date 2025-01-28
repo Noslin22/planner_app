@@ -5,22 +5,26 @@ class GuestModel {
   final String name;
   final String email;
   final bool confirmed;
+  final String? id;
 
   GuestModel({
     required this.email,
     this.confirmed = false,
     this.name = '',
+    this.id,
   });
 
   GuestModel copyWith({
     String? name,
     String? email,
     bool? confirmed,
+    String? id,
   }) {
     return GuestModel(
       name: name ?? this.name,
       confirmed: confirmed ?? this.confirmed,
       email: email ?? this.email,
+      id: id ?? this.id,
     );
   }
 
@@ -31,10 +35,11 @@ class GuestModel {
       email: query['email'],
       name: query['name'] ?? '',
       confirmed: query['confirmed'],
+      id: query.id,
     );
   }
 
   @override
   String toString() =>
-      'GuestModel(name: $name, email: $email, confirmed: $confirmed)';
+      'GuestModel(id: $id, name: $name, email: $email, confirmed: $confirmed)';
 }

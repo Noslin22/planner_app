@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  ///zinc-400 (default)
   static const zinc = MaterialColor(
     0xFFA1A1AA,
     {

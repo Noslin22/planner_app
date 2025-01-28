@@ -19,10 +19,19 @@ class RegisterViewModel extends ChangeNotifier {
   RegisterViewModel({
     required CitiesRepository citiesRepository,
     required TripRepository tripRepository,
+    this.trip,
   })  : _citiesRepository = citiesRepository,
-        _tripRepository = tripRepository {
+        _tripRepository = tripRepository,
+        guests = trip?.guests ?? [] {
+    if (trip != null) {
+      _destination = trip?.destination;
+      _dateRange = trip?.dateRange;
+      _state = RegisterState.complete;
+    }
+
     load = Command0<List<CityModel>>(_load)..execute();
     createTrip = Command2<String, String, String>(_createTrip);
+    updateTrip = Command0<TripModel>(_updateTrip);
   }
 
   final CitiesRepository _citiesRepository;
@@ -30,10 +39,9 @@ class RegisterViewModel extends ChangeNotifier {
 
   final _log = Logger('RegisterViewModel');
 
-  CityModel? _destination;
-  DateTimeRange? _dateRange;
+  TripModel? trip;
+
   RegisterState _state = RegisterState.initial;
-  final List<String> _guests = [];
 
   RegisterState get state => _state;
   set state(RegisterState state) {
@@ -42,31 +50,49 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  CityModel? _destination;
   CityModel? get destination => _destination;
+
   set destination(CityModel? destination) {
     _destination = destination;
+    if (trip != null) {
+      trip = trip!.copyWith(destination: destination);
+    }
     _log.finest('Selected destination: $destination');
     notifyListeners();
   }
 
+  DateTimeRange? _dateRange;
   DateTimeRange? get dateRange => _dateRange;
+
   set dateRange(DateTimeRange? dateRange) {
     _dateRange = dateRange;
+    if (trip != null) {
+      trip = trip!.copyWith(dateRange: dateRange);
+    }
     _log.finest('Selected date range: $dateRange');
     notifyListeners();
   }
 
-  List<String> get guests => _guests;
+  final List<GuestModel> guests;
 
-  void addGuest(String guest) {
-    _guests.add(guest);
-    _log.finest('Guest added: $guest');
+  void addGuest(String email) {
+    guests.add(GuestModel(email: email));
+
+    if (trip != null) {
+      trip = trip!.copyWith(guests: guests);
+    }
+    _log.finest('Guest added: $email');
     notifyListeners();
   }
 
-  void removeGuest(String guest) {
-    _guests.remove(guest);
-    _log.finest('Guest removed: $guest');
+  void removeGuest(String email) {
+    guests.remove(GuestModel(email: email));
+
+    if (trip != null) {
+      trip = trip!.copyWith(guests: guests);
+    }
+    _log.finest('Guest removed: $email');
     notifyListeners();
   }
 
@@ -94,19 +120,24 @@ class RegisterViewModel extends ChangeNotifier {
   }
 
   late final Command2<String, String, String> createTrip;
+  late final Command0<TripModel> updateTrip;
 
   AsyncResult<String> _createTrip(String name, String email) async {
     final result = await _tripRepository.createTrip(
       TripModel(
-        city: destination!,
+        destination: destination!,
         dateRange: dateRange!,
         name: name,
         email: email,
-        guests: guests.map((e) => GuestModel(email: e)).toList(),
+        guests: guests,
         activities: [],
         links: [],
       ),
     );
     return result;
+  }
+
+  AsyncResult<TripModel> _updateTrip() async {
+    return await _tripRepository.updateTrip(trip!);
   }
 }

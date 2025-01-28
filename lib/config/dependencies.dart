@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:planner_app/data/repository/cities/cities_repository.dart';
+import 'package:planner_app/data/repository/guests/guests_repository.dart';
+import 'package:planner_app/data/repository/links/links_repository.dart';
 import 'package:planner_app/data/repository/trip/trip_repository.dart';
+
+import 'package:planner_app/data/repository/activities/activities_repository.dart';
 import 'package:planner_app/data/service/cities/cities_service.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +36,21 @@ List<SingleChildWidget> get providers {
     Provider(
       create: (context) => CitiesRepository(
         citiesService: context.read(),
+      ),
+    ),
+    Provider(
+      create: (context) => ActivitiesRepository(
+        apiService: context.read(),
+      ),
+    ),
+    Provider(
+      create: (context) => LinksRepository(
+        apiService: context.read(),
+      ),
+    ),
+    Provider(
+      create: (context) => GuestsRepository(
+        apiService: context.read(),
       ),
     ),
   ];

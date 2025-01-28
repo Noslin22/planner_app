@@ -1,28 +1,23 @@
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalService {
   final Logger _logger = Logger('LocalService');
-  static SharedPreferences? _prefs;
+  final SharedPreferencesAsync _prefs = SharedPreferencesAsync();
 
-  LocalService() {
-    _initPrefs();
-  }
+  final ValueNotifier<String?> tripId = ValueNotifier<String?>(null);
 
-  Future<void> _initPrefs() async {
-    _prefs ??= await SharedPreferences.getInstance();
-  }
-
-  Future<void> saveTripId(String tripId) async {
-    await _initPrefs();
-    await _prefs?.setString('tripId', tripId);
-    _logger.info('Trip ID saved: $tripId');
+  Future<void> saveTripId(String id) async {
+    tripId.value = id;
+    await _prefs.setString('tripId', id);
+    _logger.info('Trip ID saved: $id');
   }
 
   Future<String?> getTripId() async {
-    await _initPrefs();
-    final tripId = _prefs?.getString('tripId');
-    _logger.info('Trip ID retrieved: $tripId');
-    return tripId;
+    final id = await _prefs.getString('tripId');
+    tripId.value = id;
+    _logger.info('Trip ID retrieved: $id');
+    return id;
   }
 }

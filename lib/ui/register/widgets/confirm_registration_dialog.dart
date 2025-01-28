@@ -13,7 +13,6 @@ class ConfirmRegistrationDialog extends StatelessWidget {
     required this.viewModel,
     required this.localizations,
   });
-
   final RegisterViewModel viewModel;
   final AppLocalization localizations;
 
@@ -42,8 +41,8 @@ class ConfirmRegistrationDialog extends StatelessWidget {
               ),
               TextSpan(text: localizations.inTheDatesOf),
               TextSpan(
-                text: viewModel.dateRange!.longFormat(
-                  AppLocalization.of(context),
+                text: viewModel.dateRange!.formatBySize(
+                  localization: AppLocalization.of(context),
                 ),
                 style: const TextStyle(
                   color: Colors.white,
@@ -90,7 +89,14 @@ class ConfirmRegistrationDialog extends StatelessWidget {
             final Widget buttonChild;
 
             if (viewModel.createTrip.running) {
-              buttonChild = const CircularProgressIndicator();
+              buttonChild = const Center(
+                child: SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(
+                    color: AppColors.textButtonColor,
+                  ),
+                ),
+              );
             } else {
               buttonChild = Text(localizations.confirmTripButton);
             }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:planner_app/ui/core/theme/app_colors.dart';
-import 'package:planner_app/ui/register/viewmodel/register_viewmodel.dart';
 
 class EmailChip extends StatelessWidget {
   const EmailChip({
     super.key,
     required this.email,
-    required this.viewModel,
+    required this.onDeleted,
   });
   final String email;
-  final RegisterViewModel viewModel;
+  final VoidCallback onDeleted;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +17,7 @@ class EmailChip extends StatelessWidget {
         email,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
-      onDeleted: () {
-        viewModel.removeGuest(email);
-      },
+      onDeleted: onDeleted,
       elevation: 1,
       side: BorderSide.none,
       deleteIcon: const Icon(Icons.close),

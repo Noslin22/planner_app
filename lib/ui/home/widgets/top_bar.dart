@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:planner_app/ui/core/localization/app_localization.dart';
 import 'package:planner_app/ui/core/theme/app_theme.dart';
 import 'package:planner_app/ui/core/ui/shaded_card.dart';
@@ -26,7 +27,7 @@ class TopBar extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          Text(viewModel.trip!.city.destinationFormat),
+          Text(viewModel.trip!.destination.destinationFormat),
           const Spacer(),
           ...isPortrait
               ? [
@@ -37,8 +38,9 @@ class TopBar extends StatelessWidget {
                 ]
               : [],
           Text(
-            viewModel.trip!.dateRange.longFormat(
-              AppLocalization.of(context),
+            viewModel.trip!.dateRange.formatBySize(
+              localization: AppLocalization.of(context),
+              format: isPortrait ? DateRangeFormat.long : DateRangeFormat.short,
             ),
           ),
           isPortrait
@@ -54,7 +56,9 @@ class TopBar extends StatelessWidget {
                   width: 12,
                 ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push('/', extra: viewModel.trip);
+            },
             style: AppTheme.secondaryButtonStyle.copyWith(
               padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(
